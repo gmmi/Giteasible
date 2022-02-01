@@ -15,7 +15,8 @@
     group: "{{ gitea_user }}"
     mode: '0750'
   with_items: ['custom', 'data', 'log']
-- ansible.builtin.file:
+- name: Prepare directories
+  ansible.builtin.file:
     name: /etc/gitea/conf
     state: directory
     owner: root
