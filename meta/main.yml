@@ -1,0 +1,21 @@
+galaxy_info:
+  author: gmmi
+  description: Set up Gitea, a self-hosted Git-server, on Debian
+  min_ansible_version: 2.0
+  license: Unilicense
+  issue_tracker_url: https://github.com/gmmi/Giteasible/issues
+
+  platforms:
+    - name: Debian
+      versions:
+        - bullseye
+
+  galaxy_tags:
+    - system
+    - git
+    - gitea
+    - self-hosted
+    - vcs
+
+dependencies: []
+
