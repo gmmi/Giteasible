@@ -1,0 +1,10 @@
+gitea_user: gitea
+gitea_version: 1.16.0
+app_name: Gitea. Because monopolies are bad.
+internal_token: ojahj6einahye5OhvaNg9ohteanae1se
+secret_key: maeCa7faingio7i
+lfs_jwt_secret: aecaineiKum4iew
+ssh_domain: ssh.gitea.local
+web_domain: web.gitea.local
+admin_user: admin
+admin_mail: admin@admin.local

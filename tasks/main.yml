@@ -1,0 +1,54 @@
+---
+- name: Install git
+  ansible.builtin.apt:
+    name: git
+    state: present
+- name: Create dedicated Gitea-user
+  ansible.builtin.user:
+    name: "{{ gitea_user }}"
+    shell: /bin/bash
+- name: Prepare directories
+  ansible.builtin.file:
+    name: /var/lib/gitea/{{ item }}
+    state: directory
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_user }}"
+    mode: '0750'
+  with_items: ['custom', 'data', 'log']
+- ansible.builtin.file:
+    name: /etc/gitea/conf
+    state: directory
+    owner: root
+    group: "{{ gitea_user }}"
+    mode: '0770'
+- name: Download Gitea
+  ansible.builtin.get_url:
+    url: https://dl.gitea.io/gitea/{{ gitea_version }}/gitea-{{ gitea_version }}-linux-amd64
+    dest: /home/{{ gitea_user }}/gitea
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_user }}"
+    mode: '0750'
+- name: Copy Systemd Unitfile
+  ansible.builtin.template:
+    src: gitea.service.j2
+    dest: /etc/systemd/system/gitea.service
+    owner: root
+    group: root
+    mode: '0644'
+- name: Copy Gitea-configuration
+  ansible.builtin.template:
+    src: app.ini.j2
+    dest: /etc/gitea/app.ini
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_user }}"
+    mode: '0640'
+  notify:
+    - Enable Gitea
+    - Restart Gitea
+- name: Create Gitea-admin
+  ansible.builtin.command: sudo -u {{ gitea_user }} /home/{{ gitea_user }}/gitea -c /etc/gitea/conf/app.ini admin user create -–username {{ admin_user }} -–email {{ admin_mail }} --admin --random-password
+  register: admin_password
+- name: Print admin_password
+  ansible.builtin.debug:
+    msg: "{{ admin_password }}"
+
