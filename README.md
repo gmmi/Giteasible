@@ -39,3 +39,4 @@ admin_mail: # Mail address of the first user to be created
 * OAuth-Integration
 * Mailer-configuration
 * Automatic creation of admin-user (currently failing)
+* Whitelist for Web-Hooks
